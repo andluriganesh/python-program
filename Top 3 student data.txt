@@ -1,0 +1,40 @@
+import pandas as pd
+
+students_data = [
+    {"student_id": 1, "name": "Alice", "department": "CSE", "stream": "AI", "subject": "Maths", "marks": 95},
+    {"student_id": 2, "name": "Bob", "department": "CSE", "stream": "AI", "subject": "Maths", "marks": 98},
+    {"student_id": 3, "name": "Charlie", "department": "CSE", "stream": "AI", "subject": "Maths", "marks": 98},
+    {"student_id": 4, "name": "David", "department": "CSE", "stream": "AI", "subject": "Maths", "marks": 93},
+    {"student_id": 5, "name": "Eva", "department": "ECE", "stream": "Networks", "subject": "Physics", "marks": 90},
+    {"student_id": 6, "name": "Frank", "department": "ECE", "stream": "Networks", "subject": "Physics", "marks": 92},
+    {"student_id": 7, "name": "Grace", "department": "ECE", "stream": "Networks", "subject": "Physics", "marks": 92},
+    {"student_id": 8, "name": "Henry", "department": "ECE", "stream": "Networks", "subject": "Physics", "marks": 85},
+    {"student_id": 9, "name": "Ivy", "department": "MECH", "stream": "Thermodynamics", "subject": "Fluid Mechanics", "marks": 88},
+    {"student_id": 10, "name": "Jack", "department": "MECH", "stream": "Thermodynamics", "subject": "Fluid Mechanics", "marks": 92},
+    {"student_id": 11, "name": "Kevin", "department": "MECH", "stream": "Thermodynamics", "subject": "Fluid Mechanics", "marks": 92},
+    {"student_id": 12, "name": "Leo", "department": "MECH", "stream": "Thermodynamics", "subject": "Fluid Mechanics", "marks": 90},
+]
+
+if not students_data:
+    print("⚠️ No student data available! Please provide student records before running the program.")
+else:
+    df = pd.DataFrame(students_data)
+
+    if df.empty:
+        print("⚠️ DataFrame is empty. No data to process.")
+    else:
+        for (dept, stream, subject), group in df.groupby(["department", "stream", "subject"]):
+            group_sorted = group.sort_values(by="marks", ascending=False)
+            if len(group_sorted) > 3:
+                cutoff = group_sorted.iloc[2]["marks"]
+                top_students = group_sorted[group_sorted["marks"] >= cutoff]
+            else:
+                top_students = group_sorted
+
+            print(f"\nDepartment: {dept}, Stream: {stream}, Subject: {subject}")
+            rank = 1
+            for _, row in top_students.iterrows():
+                print(f"{rank}. {row['name']} - {row['marks']}")
+                rank += 1
+
+
